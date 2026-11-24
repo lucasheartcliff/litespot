@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    name: Lint & type-check
+    name: Lint & test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,12 +30,6 @@ jobs:
       - name: Install npm deps
         run: npm ci
 
-      - name: Type-check frontend
-        run: npm run check
-
-      - name: Build frontend
-        run: npm run build
-
       - name: Rust format check
         working-directory: src-tauri
         run: cargo fmt --all -- --check
@@ -43,6 +37,10 @@ jobs:
       - name: Clippy
         working-directory: src-tauri
         run: cargo clippy --all-targets -- -D warnings
+
+      - name: Unit tests
+        working-directory: src-tauri
+        run: cargo test
 
   build-windows:
     name: Build Windows bundle

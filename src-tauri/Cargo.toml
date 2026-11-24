@@ -1,7 +1,7 @@
 [package]
 name = "litespot"
 version = "0.1.0"
-description = "Litespot — a lightweight Spotify desktop client"
+description = "Litespot — a lightweight native shell for open.spotify.com"
 authors = ["Litespot contributors"]
 edition = "2021"
 rust-version = "1.85"
@@ -16,20 +16,7 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 tauri = { version = "2", features = [] }
-tauri-plugin-opener = "2"
 tauri-plugin-global-shortcut = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
-tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
-keyring = { version = "3", features = ["windows-native", "sync-secret-service", "apple-native"] }
-url = "2"
-sha2 = "0.10"
-base64 = "0.22"
-rand = "0.8"
-thiserror = "2"
-tiny_http = "0.12"
-log = "0.4"
 
 [features]
 # Default production features.
