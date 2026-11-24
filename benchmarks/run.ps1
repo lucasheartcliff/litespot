@@ -55,8 +55,7 @@ if (Want "usage") {
         for ($run = 1; $run -le $config.runs; $run++) {
             Write-Host "Run $run of $($config.runs)"
 
-            Get-Process -Name $app.processNames -ErrorAction SilentlyContinue |
-                Stop-Process -Force -ErrorAction SilentlyContinue
+            Stop-AppProcesses -Names $app.processNames
             Start-Sleep -Seconds 2
             Start-Process -FilePath $app.exe | Out-Null
 
@@ -68,8 +67,7 @@ if (Want "usage") {
             Start-Sleep -Seconds $config.settleSeconds
             & (Join-Path $PSScriptRoot "measure-usage.ps1") -AppName $app.name -Phase playback -Run $run -ConfigPath $ConfigPath
 
-            Get-Process -Name $app.processNames -ErrorAction SilentlyContinue |
-                Stop-Process -Force -ErrorAction SilentlyContinue
+            Stop-AppProcesses -Names $app.processNames
             Start-Sleep -Seconds 2
         }
     }
