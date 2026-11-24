@@ -2,13 +2,15 @@
 //! `run()` is the shared entrypoint used by the desktop binary (`main.rs`).
 
 mod media;
+mod navigation;
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Instant;
 
 use media::MediaAction;
 use tauri::webview::PageLoadEvent;
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Manager, WebviewWindowBuilder};
+use tauri_plugin_opener::OpenerExt;
 
 static READY_REPORTED: AtomicBool = AtomicBool::new(false);
 
@@ -21,6 +23,7 @@ pub fn run() {
     let started_at = Instant::now();
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .on_page_load(move |webview, payload| {
             if payload.event() == PageLoadEvent::Finished
@@ -34,11 +37,31 @@ pub fn run() {
             }
         })
         .setup(|app| {
+            create_main_window(app.handle())?;
             register_media_keys(app.handle())?;
             Ok(())
         })
         .run(tauri::generate_context!())
         .expect("error while running Litespot");
+}
+
+/// Create the main window from `tauri.conf.json` with a navigation guard:
+/// non-Spotify URLs are opened in the system browser instead of in-app.
+fn create_main_window(app: &AppHandle) -> tauri::Result<()> {
+    let config = app.config().app.windows[0].clone();
+    let opener = app.clone();
+    WebviewWindowBuilder::from_config(app, &config)?
+        .on_navigation(move |url| {
+            if navigation::is_allowed(url.scheme(), url.host_str()) {
+                return true;
+            }
+            if matches!(url.scheme(), "http" | "https") {
+                let _ = opener.opener().open_url(url.as_str(), None::<&str>);
+            }
+            false
+        })
+        .build()?;
+    Ok(())
 }
 
 /// Register OS media keys and forward each press to the page as a button click.

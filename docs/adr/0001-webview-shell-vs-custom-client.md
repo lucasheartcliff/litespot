@@ -21,6 +21,9 @@ clicking the site's player buttons through injected JavaScript.
 - Embedded webviews may be restricted by Spotify (for example third-party
   logins such as Google); email/password login is the safe path.
 - No control over the UI beyond injecting CSS/JS.
+- The webview loads remote content, so navigation is restricted to `*.spotify.com`
+  (`src-tauri/src/navigation.rs`); other links open in the system browser, no
+  capability grants `remote` access, and SmartScreen stays enabled.
 - Wrapping the site is not an officially supported use; Spotify may block it.
 - Widevine support in the system webview remains the main technical risk.
 

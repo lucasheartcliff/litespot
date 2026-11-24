@@ -18,8 +18,9 @@
         "resizable": true,
         "fullscreen": false,
         "visible": false,
-        "additionalBrowserArgs": "--autoplay-policy=no-user-gesture-required --disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection",
-        "url": "https://open.spotify.com"
+        "additionalBrowserArgs": "--autoplay-policy=no-user-gesture-required",
+        "url": "https://open.spotify.com",
+        "create": false
       }
     ],
     "security": {
