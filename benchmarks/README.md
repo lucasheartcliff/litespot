@@ -1,7 +1,7 @@
-# Spotlite benchmarks
+# Litespot benchmarks
 
-The **final validation** for Spotlite: a Windows PowerShell harness that measures
-Spotlite against the official Spotify desktop client on the same machine, across
+The **final validation** for Litespot: a Windows PowerShell harness that measures
+Litespot against the official Spotify desktop client on the same machine, across
 four axes:
 
 | Metric | What it captures |
@@ -14,7 +14,7 @@ four axes:
 ## Why a process *tree*
 
 Neither app is a single process. Spotify spawns several `Spotify.exe`
-renderer/helper processes; Spotlite spawns the host `Spotlite.exe` plus one or
+renderer/helper processes; Litespot spawns the host `Litespot.exe` plus one or
 more `msedgewebview2.exe` children. Comparing only the main process would be
 misleading, so the harness walks the real parent/child tree from the launched
 PID (`Get-DescendantPids` in `lib/Common.ps1`) and sums across it.
@@ -32,7 +32,7 @@ PID (`Get-DescendantPids` in `lib/Common.ps1`) and sums across it.
 
 - Windows 10/11 with both apps installed and signed into the **same Spotify
   Premium** account.
-- Spotlite built and installed (`npm run tauri build`, then run the installer),
+- Litespot built and installed (`npm run tauri build`, then run the installer),
   so it appears as its own process tree.
 - PowerShell 5.1+ (ships with Windows) or PowerShell 7.
 
@@ -48,7 +48,7 @@ copy config.example.json config.json
 
 # or individual phases
 .\run.ps1 -Only size,startup
-.\measure-usage.ps1 -AppName Spotlite -Phase idle
+.\measure-usage.ps1 -AppName Litespot -Phase idle
 ```
 
 The memory/CPU phase is interactive on purpose: in-app playback needs a manual
@@ -64,6 +64,6 @@ Raw samples land in `results/*.csv`; `report.ps1` aggregates them into
   the whole machine.
 - Numbers depend on machine, network, and the specific track/playlist. Treat the
   report as a same-machine comparison, not absolute figures.
-- For a precise Spotlite-only startup number you can run a **debug** build and
-  read the `SPOTLITE_READY_MS=<ms>` line it prints (emitted by the `mark_ready`
+- For a precise Litespot-only startup number you can run a **debug** build and
+  read the `LITESPOT_READY_MS=<ms>` line it prints (emitted by the `mark_ready`
   command when the UI mounts).

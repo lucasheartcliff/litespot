@@ -1,4 +1,4 @@
-// Generates placeholder Spotlite app icons (a green disc) as PNGs + a Windows
+// Generates placeholder Litespot app icons (a green disc) as PNGs + a Windows
 // ICO, with no external dependencies. Run: `node scripts/gen-icons.mjs`.
 // Replace with real branding before release.
 

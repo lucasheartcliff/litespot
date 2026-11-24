@@ -1,81 +1,53 @@
-# Spotlite
+# Litespot
 
-A **lightweight Spotify desktop client** built on **Rust + Tauri 2** with the
-OS-native **WebView2** on Windows. Instead of bundling a full Chromium runtime
-like the official CEF-based app, Spotlite reuses the system webview, keeping the
-binary and memory footprint small. Audio plays through Spotify's official
-**Web Playback SDK** (Widevine/EME); browsing and control go through the
-**Spotify Web API**, proxied by the Rust host.
+A **lightweight native shell for [open.spotify.com](https://open.spotify.com)**
+built on **Rust + Tauri 2**, using the OS-native **WebView2** on Windows instead
+of bundling Chromium like the official CEF-based app. Login and playback are
+handled by the Spotify web player itself, so **no API key or app registration
+is needed**.
 
-> **Requires Spotify Premium.** The Web Playback SDK only streams for Premium
-> accounts.
+> **Requires Spotify Premium** for full-length playback.
 
 ## How it works
 
-```
-Tauri host (Rust)                     WebView2 (Chromium) frontend (Svelte)
-─────────────────                     ──────────────────────────────────────
-• OAuth PKCE + loopback redirect  ─▶   • Login, browse, search, library UI
-• Tokens in Windows Credential Mgr     • Web Playback SDK  ── plays audio (EME)
-• Web API proxy commands          ◀─   • Calls host commands for all API access
-• Global media-key shortcuts       ─▶  • media-key events drive transport
-```
+- Tauri opens a window that loads `https://open.spotify.com`.
+- Global OS media keys (play/pause, next, previous) are captured in Rust and
+  forwarded by clicking the matching player buttons on the page
+  (`src-tauri/src/media.rs`).
+- On first page load the host prints `LITESPOT_READY_MS=<ms>`, which the
+  startup benchmark scrapes.
 
-- **Audio** is decoded/played by the Web Playback SDK inside WebView2. The Rust
-  side never touches raw audio.
-- **Tokens** live in the Windows Credential Manager (via `keyring`), refreshed
-  centrally in Rust; the access token is minted on demand for the SDK.
-
-Source map:
-- `src-tauri/src/` — Rust host: `auth.rs` (PKCE), `token_store.rs` (keyring),
-  `spotify_api.rs` (Web API), `commands.rs` (Tauri command surface), `lib.rs`.
-- `src/` — Svelte frontend: `lib/playback.ts` (SDK), `lib/api.ts`, `lib/stores.ts`,
-  `views/`, `components/`.
-- `benchmarks/` — the efficiency comparison harness (see below).
+The previous custom client (Svelte UI, OAuth PKCE, Web API) is kept on the
+`archive/custom-client` branch. See
+[ADR 0001](docs/adr/0001-webview-shell-vs-custom-client.md).
 
 ## Prerequisites
 
-- **Windows 10/11** (the target platform — WebView2 has the best Widevine
-  support). Rust 1.85+, Node 18+, and the
-  [Tauri prerequisites](https://tauri.app/start/prerequisites/).
-- A Spotify **Premium** account.
+- **Windows 10/11** (WebView2 has the best Widevine support), Rust 1.85+, Node 18+
+  and the [Tauri prerequisites](https://tauri.app/start/prerequisites/).
 
-## Setup
+## Run
 
-1. **Register a Spotify app** at
-   <https://developer.spotify.com/dashboard>. Add this exact redirect URI:
+```bash
+npm install
+npm run tauri dev      # develop
+npm run tauri build    # produce an MSI/NSIS installer
+```
 
-   ```
-   http://127.0.0.1:8888/callback
-   ```
+Rust unit tests: `cd src-tauri && cargo test`.
 
-   Copy the **Client ID** (public — no secret is used with PKCE).
+## Caveats
 
-2. **Provide the client id** via environment variable (or bake it at build time
-   with the same name):
-
-   ```powershell
-   $env:SPOTLITE_CLIENT_ID = "your_client_id"
-   ```
-
-3. **Install and run**:
-
-   ```bash
-   npm install
-   npm run tauri dev      # develop
-   npm run tauri build    # produce an MSI/NSIS installer
-   ```
-
-## De-risk playback first (Widevine)
-
-Playback depends on the webview negotiating the Widevine CDM. Before relying on
-it, open the bundled smoke test — in dev, navigate the webview to
-`http://localhost:1420/drm-test.html`. A green ✔ means the Web Playback SDK
-route works in your WebView2; a red ✘ means it can't play protected audio there.
+- Media keys rely on Spotify's `data-testid` selectors and may stop working if
+  the site changes them.
+- Logging in through third-party providers (Google, Facebook) may be refused
+  inside an embedded webview; use email/password.
+- **Widevine check:** with `npm run tauri dev`, the bundled page
+  `web/drm-test.html` tests DRM support in your WebView2.
 
 ## Benchmarks
 
-`benchmarks/` contains a PowerShell harness that compares Spotlite against the
+`benchmarks/` contains a PowerShell harness that compares Litespot against the
 official Spotify client for **memory, CPU, startup time, and disk/installer
 size**, summing over each app's whole process tree and reporting median ± std
 dev across repeated runs. See [`benchmarks/README.md`](benchmarks/README.md).
@@ -88,7 +60,7 @@ copy config.example.json config.json   # then edit paths
 
 ## Legal
 
-Spotlite uses Spotify's official Web API and Web Playback SDK and requires a
+Litespot uses Spotify's official Web API and Web Playback SDK and requires a
 Premium account. It is an independent project and is not affiliated with or
 endorsed by Spotify. Respect the
 [Spotify Developer Terms](https://developer.spotify.com/terms).
