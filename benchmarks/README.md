@@ -65,5 +65,4 @@ Raw samples land in `results/*.csv`; `report.ps1` aggregates them into
 - Numbers depend on machine, network, and the specific track/playlist. Treat the
   report as a same-machine comparison, not absolute figures.
 - For a precise Litespot-only startup number you can run a **debug** build and
-  read the `LITESPOT_READY_MS=<ms>` line it prints (emitted by the `mark_ready`
-  command when the UI mounts).
+  read the `LITESPOT_READY_MS=<ms>` line it prints (printed by the host when the first page finishes loading).

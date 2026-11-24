@@ -1,5 +1,11 @@
 # Litespot
 
+> **Status: archived.** Development stopped after benchmarking: Litespot is far
+> smaller on disk (3 MB vs 436 MB) and starts ~4.5x faster than the official
+> client, but ties it on memory and uses ~10x more idle CPU. See
+> [docs/RESULTS.md](docs/RESULTS.md), the [article](docs/ARTICLE.md) (pt-BR) and
+> [ADR 0002](docs/adr/0002-archive-project.md).
+
 A **lightweight native shell for [open.spotify.com](https://open.spotify.com)**
 built on **Rust + Tauri 2**, using the OS-native **WebView2** on Windows instead
 of bundling Chromium like the official CEF-based app. Login and playback are
