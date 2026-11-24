@@ -3,7 +3,7 @@
 > **Status: archived.** Development stopped after benchmarking: Litespot is far
 > smaller on disk (3 MB vs 436 MB) and starts ~4.5x faster than the official
 > client, but ties it on memory and uses ~10x more idle CPU. See
-> [docs/RESULTS.md](docs/RESULTS.md), the [article](docs/ARTICLE.md) (pt-BR) and
+> [docs/RESULTS.md](docs/RESULTS.md) and
 > [ADR 0002](docs/adr/0002-archive-project.md).
 
 A **lightweight native shell for [open.spotify.com](https://open.spotify.com)**
