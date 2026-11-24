@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Spotlite",
+  "productName": "Litespot",
   "version": "0.1.0",
-  "identifier": "app.spotlite.desktop",
+  "identifier": "app.litespot.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -13,7 +13,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "title": "Spotlite",
+        "title": "Litespot",
         "width": 1200,
         "height": 800,
         "minWidth": 800,

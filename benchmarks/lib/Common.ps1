@@ -1,8 +1,8 @@
-# Shared helpers for the Spotlite benchmark harness.
+# Shared helpers for the Litespot benchmark harness.
 #
 # Fairness principle: each app is measured across its ENTIRE process tree, not a
 # single process. Spotify spawns multiple Spotify.exe helper/renderer processes;
-# Spotlite spawns the host Spotlite.exe plus msedgewebview2.exe children. We walk
+# Litespot spawns the host Litespot.exe plus msedgewebview2.exe children. We walk
 # the real parent/child tree from the launched root PID so the comparison is
 # apples-to-apples.
 

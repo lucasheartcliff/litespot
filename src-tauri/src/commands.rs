@@ -55,12 +55,12 @@ pub fn has_client_id(state: State<'_, AppState>) -> bool {
 
 /// Called once by the frontend when the UI has mounted and is interactive.
 /// Emits a machine-parseable line the startup benchmark scrapes from stdout,
-/// giving a precise "launch → interactive" figure for Spotlite.
+/// giving a precise "launch → interactive" figure for Litespot.
 #[tauri::command]
 pub fn mark_ready(app: tauri::AppHandle, state: State<'_, AppState>) {
     use tauri::Manager;
     let ms = state.started_at.elapsed().as_millis();
-    println!("SPOTLITE_READY_MS={ms}");
+    println!("LITESPOT_READY_MS={ms}");
     // Reveal the window only once the UI is ready, avoiding a white flash.
     if let Some(win) = app.get_webview_window("main") {
         let _ = win.show();

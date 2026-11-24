@@ -91,29 +91,29 @@ pub fn wait_for_code(expected_state: &str) -> AppResult<String> {
 
         let (body, result) = if let Some(err) = error {
             (
-                "Spotlite login failed. You can close this tab.".to_string(),
+                "Litespot login failed. You can close this tab.".to_string(),
                 Err(AppError::Auth(format!("authorization denied: {err}"))),
             )
         } else if state.as_deref() != Some(expected_state) {
             (
-                "Spotlite login failed (state mismatch). You can close this tab.".to_string(),
+                "Litespot login failed (state mismatch). You can close this tab.".to_string(),
                 Err(AppError::Auth("state mismatch (possible CSRF)".into())),
             )
         } else if let Some(code) = code {
             (
-                "Spotlite is now connected. You can close this tab and return to the app."
+                "Litespot is now connected. You can close this tab and return to the app."
                     .to_string(),
                 Ok(code),
             )
         } else {
             (
-                "Spotlite login failed (no code). You can close this tab.".to_string(),
+                "Litespot login failed (no code). You can close this tab.".to_string(),
                 Err(AppError::Auth("no authorization code in redirect".into())),
             )
         };
 
         let html = format!(
-            "<!doctype html><html><head><meta charset=\"utf-8\"><title>Spotlite</title></head>\
+            "<!doctype html><html><head><meta charset=\"utf-8\"><title>Litespot</title></head>\
              <body style=\"font-family:sans-serif;background:#121212;color:#fff;display:flex;\
              align-items:center;justify-content:center;height:100vh;margin:0\">\
              <h2>{body}</h2></body></html>"

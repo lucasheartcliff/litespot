@@ -12,6 +12,10 @@ benchmarks/config.json
 benchmarks/results/
 benchmarks/REPORT.md
 
+# Env
+.env
+.env.local
+
 # Editor / OS
 .DS_Store
 .vscode/

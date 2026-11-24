@@ -1,4 +1,4 @@
-# Spotlite benchmark orchestrator.
+# Litespot benchmark orchestrator.
 #
 # Runs the full comparison suite (size, startup, memory, CPU) for every app in
 # config.json and regenerates REPORT.md. Some phases are interactive because
@@ -29,7 +29,7 @@ if ($Fresh) {
     Write-Host "Cleared previous results."
 }
 
-Write-Host "== Spotlite benchmark suite ==" -ForegroundColor Cyan
+Write-Host "== Litespot benchmark suite ==" -ForegroundColor Cyan
 Write-Host ("Cores: {0}  Runs: {1}  Sample window: {2}s" -f `
     [Environment]::ProcessorCount, $config.runs, $config.sampleSeconds)
 

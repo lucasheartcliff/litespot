@@ -1,14 +1,14 @@
 [package]
-name = "spotlite"
+name = "litespot"
 version = "0.1.0"
-description = "Spotlite — a lightweight Spotify desktop client"
-authors = ["Spotlite contributors"]
+description = "Litespot — a lightweight Spotify desktop client"
+authors = ["Litespot contributors"]
 edition = "2021"
 rust-version = "1.85"
 
 # The library is what Tauri's mobile/desktop entrypoints call into.
 [lib]
-name = "spotlite_lib"
+name = "litespot_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

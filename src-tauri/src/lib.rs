@@ -1,4 +1,4 @@
-//! Spotlite Tauri host library. `run()` is the shared entrypoint used by the
+//! Litespot Tauri host library. `run()` is the shared entrypoint used by the
 //! desktop binary (`main.rs`).
 
 mod auth;
@@ -43,7 +43,7 @@ pub fn run() {
             commands::set_volume,
         ])
         .run(tauri::generate_context!())
-        .expect("error while running Spotlite");
+        .expect("error while running Litespot");
 }
 
 /// Register OS media keys and forward them to the frontend, which drives the

@@ -1,6 +1,6 @@
 # Aggregates results/*.csv into a human-readable REPORT.md with median + std dev
 # per app and metric, plus a "lighter by" comparison (assumes the first app in
-# config is the challenger, i.e. Spotlite).
+# config is the challenger, i.e. Litespot).
 
 param([string]$ConfigPath)
 
@@ -31,13 +31,13 @@ function Ratio($challengerVal, $baselineVal) {
 }
 
 $sb = [System.Text.StringBuilder]::new()
-[void]$sb.AppendLine("# Spotlite vs Spotify — Efficiency Benchmark")
+[void]$sb.AppendLine("# Litespot vs Spotify — Efficiency Benchmark")
 [void]$sb.AppendLine()
 [void]$sb.AppendLine("Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm')  ")
 [void]$sb.AppendLine("Machine: $([Environment]::MachineName), $([Environment]::ProcessorCount) logical cores, Windows $([Environment]::OSVersion.Version)  ")
 [void]$sb.AppendLine("Runs per metric: $($config.runs); sample window: $($config.sampleSeconds)s.")
 [void]$sb.AppendLine()
-[void]$sb.AppendLine("Values are **median ± sample std dev** across runs. Memory and CPU are summed over each app's **entire process tree** (Spotify helpers; Spotlite's msedgewebview2 children).")
+[void]$sb.AppendLine("Values are **median ± sample std dev** across runs. Memory and CPU are summed over each app's **entire process tree** (Spotify helpers; Litespot's msedgewebview2 children).")
 [void]$sb.AppendLine()
 
 # --- Memory + CPU ---

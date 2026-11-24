@@ -6,11 +6,11 @@
   "settleSeconds": 5,
   "apps": [
     {
-      "name": "Spotlite",
-      "exe": "C:\\Users\\YOU\\AppData\\Local\\Spotlite\\Spotlite.exe",
-      "processNames": ["Spotlite", "msedgewebview2"],
-      "installDir": "C:\\Users\\YOU\\AppData\\Local\\Spotlite",
-      "installer": "..\\src-tauri\\target\\release\\bundle\\nsis\\Spotlite_0.1.0_x64-setup.exe"
+      "name": "Litespot",
+      "exe": "C:\\Users\\YOU\\AppData\\Local\\Litespot\\Litespot.exe",
+      "processNames": ["Litespot", "msedgewebview2"],
+      "installDir": "C:\\Users\\YOU\\AppData\\Local\\Litespot",
+      "installer": "..\\src-tauri\\target\\release\\bundle\\nsis\\Litespot_0.1.0_x64-setup.exe"
     },
     {
       "name": "Spotify",

@@ -2,8 +2,8 @@
 # repeated `runs` times. Appends rows to results/startup.csv.
 #
 # The same app-agnostic signal (Wait-ForMainWindow) is used for both apps so the
-# comparison is fair. For a precise Spotlite-only figure you can additionally run
-# a debug build and read the `SPOTLITE_READY_MS=` line it prints to stdout.
+# comparison is fair. For a precise Litespot-only figure you can additionally run
+# a debug build and read the `LITESPOT_READY_MS=` line it prints to stdout.
 
 param(
     [Parameter(Mandatory)][string]$AppName,

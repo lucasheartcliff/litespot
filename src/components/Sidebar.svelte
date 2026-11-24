@@ -23,7 +23,7 @@
 </script>
 
 <nav class="sidebar">
-  <div class="brand">Spotlite</div>
+  <div class="brand">Litespot</div>
 
   <ul class="nav">
     <li>

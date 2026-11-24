@@ -3,8 +3,8 @@
 //! The Spotify **client id** identifies the app. For an installed desktop app
 //! using Authorization Code + PKCE there is *no client secret* (it is a public
 //! client), so the client id is safe to ship. It is resolved at runtime from
-//! the `SPOTLITE_CLIENT_ID` environment variable, falling back to a value
-//! baked in at compile time (also via `SPOTLITE_CLIENT_ID`). Register your own
+//! the `LITESPOT_CLIENT_ID` environment variable, falling back to a value
+//! baked in at compile time (also via `LITESPOT_CLIENT_ID`). Register your own
 //! app at https://developer.spotify.com/dashboard and add the redirect URI
 //! below to it.
 
@@ -30,12 +30,12 @@ pub const SCOPES: &str = "streaming \
 /// Resolve the Spotify client id. Runtime env var wins over the compile-time
 /// baked value so users can supply their own without rebuilding.
 pub fn client_id() -> Option<String> {
-    if let Ok(v) = std::env::var("SPOTLITE_CLIENT_ID") {
+    if let Ok(v) = std::env::var("LITESPOT_CLIENT_ID") {
         if !v.trim().is_empty() {
             return Some(v.trim().to_string());
         }
     }
-    match option_env!("SPOTLITE_CLIENT_ID") {
+    match option_env!("LITESPOT_CLIENT_ID") {
         Some(v) if !v.trim().is_empty() => Some(v.trim().to_string()),
         _ => None,
     }

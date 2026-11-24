@@ -1,8 +1,8 @@
-# Spotlite
+# Litespot
 
 A **lightweight Spotify desktop client** built on **Rust + Tauri 2** with the
 OS-native **WebView2** on Windows. Instead of bundling a full Chromium runtime
-like the official CEF-based app, Spotlite reuses the system webview, keeping the
+like the official CEF-based app, Litespot reuses the system webview, keeping the
 binary and memory footprint small. Audio plays through Spotify's official
 **Web Playback SDK** (Widevine/EME); browsing and control go through the
 **Spotify Web API**, proxied by the Rust host.
@@ -55,7 +55,7 @@ Source map:
    with the same name):
 
    ```powershell
-   $env:SPOTLITE_CLIENT_ID = "your_client_id"
+   $env:LITESPOT_CLIENT_ID = "your_client_id"
    ```
 
 3. **Install and run**:
@@ -75,7 +75,7 @@ route works in your WebView2; a red ✘ means it can't play protected audio ther
 
 ## Benchmarks
 
-`benchmarks/` contains a PowerShell harness that compares Spotlite against the
+`benchmarks/` contains a PowerShell harness that compares Litespot against the
 official Spotify client for **memory, CPU, startup time, and disk/installer
 size**, summing over each app's whole process tree and reporting median ± std
 dev across repeated runs. See [`benchmarks/README.md`](benchmarks/README.md).
@@ -88,7 +88,7 @@ copy config.example.json config.json   # then edit paths
 
 ## Legal
 
-Spotlite uses Spotify's official Web API and Web Playback SDK and requires a
+Litespot uses Spotify's official Web API and Web Playback SDK and requires a
 Premium account. It is an independent project and is not affiliated with or
 endorsed by Spotify. Respect the
 [Spotify Developer Terms](https://developer.spotify.com/terms).

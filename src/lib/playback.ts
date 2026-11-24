@@ -10,7 +10,7 @@ import { player, showToast } from "./stores";
 import type { Track } from "./types";
 
 const SDK_URL = "https://sdk.scdn.co/spotify-player.js";
-const DEVICE_NAME = "Spotlite";
+const DEVICE_NAME = "Litespot";
 
 let sdkPlayer: Spotify.Player | null = null;
 let deviceId: string | null = null;
@@ -29,7 +29,7 @@ function loadSdk(): Promise<void> {
   });
 }
 
-/** Initialize the SDK player and make Spotlite the active playback device. */
+/** Initialize the SDK player and make Litespot the active playback device. */
 export async function initPlayback(): Promise<void> {
   await loadSdk();
 
@@ -57,7 +57,7 @@ export async function initPlayback(): Promise<void> {
   p.addListener("ready", async ({ device_id }: { device_id: string }) => {
     deviceId = device_id;
     player.update((s) => ({ ...s, ready: true, deviceId: device_id }));
-    // Make Spotlite the active device (without auto-starting playback).
+    // Make Litespot the active device (without auto-starting playback).
     try {
       await api.transferPlayback(device_id, false);
     } catch (e) {

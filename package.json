@@ -1,7 +1,7 @@
 {
-  "name": "spotlite",
+  "name": "litespot",
   "version": "0.1.0",
-  "description": "Spotlite — a lightweight Spotify desktop client built on Rust + Tauri + WebView2",
+  "description": "Litespot — a lightweight Spotify desktop client built on Rust + Tauri + WebView2",
   "type": "module",
   "license": "MIT",
   "scripts": {

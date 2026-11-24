@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::{AppError, AppResult};
 
-const SERVICE: &str = "app.spotlite.desktop";
+const SERVICE: &str = "app.litespot.desktop";
 const ACCOUNT: &str = "spotify-tokens";
 
 /// The full OAuth token bundle we persist between sessions.

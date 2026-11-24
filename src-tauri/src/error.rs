@@ -5,7 +5,7 @@ use serde::{Serialize, Serializer};
 
 #[derive(Debug, thiserror::Error)]
 pub enum AppError {
-    #[error("no Spotify client id configured; set SPOTLITE_CLIENT_ID")]
+    #[error("no Spotify client id configured; set LITESPOT_CLIENT_ID")]
     MissingClientId,
 
     #[error("not authenticated; log in first")]

@@ -57,7 +57,7 @@
 
 <main class="app">
   {#if booting}
-    <div class="splash">Loading Spotlite…</div>
+    <div class="splash">Loading Litespot…</div>
   {:else if !$authenticated}
     <Login onLoggedIn={handleLoggedIn} />
   {:else}

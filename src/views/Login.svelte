@@ -24,12 +24,12 @@
 
 <div class="login">
   <div class="login-card">
-    <h1>Spotlite</h1>
+    <h1>Litespot</h1>
     <p class="tagline">A lightweight Spotify desktop client.</p>
 
     {#if !hasClientId}
       <p class="warn">
-        No Spotify client id configured. Set <code>SPOTLITE_CLIENT_ID</code> and
+        No Spotify client id configured. Set <code>LITESPOT_CLIENT_ID</code> and
         restart. See the README for setup.
       </p>
     {/if}
