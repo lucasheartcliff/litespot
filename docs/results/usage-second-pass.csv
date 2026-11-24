@@ -1,0 +1,7 @@
+App,Phase,Run,WorkingSetMedMB,WorkingSetMaxMB,PrivateMedMB,CpuAvgPct,CpuMaxPct
+Litespot,idle,1,966.8,1145.6,625.4,5.3,9.6
+Litespot,idle,2,955.2,1091.3,610.7,5.2,9.1
+Litespot,idle,3,970.6,1173.8,625.3,5.4,9.5
+Spotify,idle,1,988.2,1100.6,721,0.2,2.2
+Spotify,idle,2,922.5,1029.1,643.6,0.6,3.5
+Spotify,idle,3,1048.5,1203.3,798.2,0.7,3.7
