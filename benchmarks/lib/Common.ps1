@@ -8,6 +8,10 @@
 
 Set-StrictMode -Version Latest
 
+# Force invariant number formatting/parsing. On machines with a decimal comma
+# (e.g. pt-BR), CSV values like "968,2" were re-read as 9682 and inflated 10x.
+[System.Threading.Thread]::CurrentThread.CurrentCulture = [System.Globalization.CultureInfo]::InvariantCulture
+
 function Get-DescendantPids {
     <#
         Returns the given root PID plus all descendant PIDs, walking
