@@ -20,7 +20,7 @@ function Read-CsvSafe($name) {
 
 function Fmt($median, $std) {
     if ($null -eq $median) { return "n/a" }
-    return ("{0} ± {1}" -f [math]::Round($median, 1), [math]::Round($std, 1))
+    return ("{0} +/- {1}" -f [math]::Round($median, 1), [math]::Round($std, 1))
 }
 
 function Ratio($challengerVal, $baselineVal) {
@@ -31,20 +31,20 @@ function Ratio($challengerVal, $baselineVal) {
 }
 
 $sb = [System.Text.StringBuilder]::new()
-[void]$sb.AppendLine("# Litespot vs Spotify — Efficiency Benchmark")
+[void]$sb.AppendLine("# Litespot vs Spotify - Efficiency Benchmark")
 [void]$sb.AppendLine()
 [void]$sb.AppendLine("Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm')  ")
 [void]$sb.AppendLine("Machine: $([Environment]::MachineName), $([Environment]::ProcessorCount) logical cores, Windows $([Environment]::OSVersion.Version)  ")
 [void]$sb.AppendLine("Runs per metric: $($config.runs); sample window: $($config.sampleSeconds)s.")
 [void]$sb.AppendLine()
-[void]$sb.AppendLine("Values are **median ± sample std dev** across runs. Memory and CPU are summed over each app's **entire process tree** (Spotify helpers; Litespot's msedgewebview2 children).")
+[void]$sb.AppendLine("Values are **median +/- sample std dev** across runs. Memory and CPU are summed over each app's **entire process tree** (Spotify helpers; Litespot's msedgewebview2 children).")
 [void]$sb.AppendLine()
 
 # --- Memory + CPU ---
-$usage = Read-CsvSafe "usage.csv"
+$usage = @(Read-CsvSafe "usage.csv")
 if ($usage.Count) {
     foreach ($phase in @("idle", "playback")) {
-        [void]$sb.AppendLine("## Memory & CPU — $phase")
+        [void]$sb.AppendLine("## Memory & CPU - $phase")
         [void]$sb.AppendLine()
         [void]$sb.AppendLine("| App | Working set (MB) | Private (MB) | CPU (%) |")
         [void]$sb.AppendLine("|-----|------------------|--------------|---------|")
@@ -71,9 +71,9 @@ if ($usage.Count) {
 }
 
 # --- Startup ---
-$startup = Read-CsvSafe "startup.csv"
+$startup = @(Read-CsvSafe "startup.csv")
 if ($startup.Count) {
-    [void]$sb.AppendLine("## Startup time (launch → main window visible)")
+    [void]$sb.AppendLine("## Startup time (launch -> main window visible)")
     [void]$sb.AppendLine()
     [void]$sb.AppendLine("| App | Startup (ms) |")
     [void]$sb.AppendLine("|-----|--------------|")
@@ -93,7 +93,7 @@ if ($startup.Count) {
 }
 
 # --- Size ---
-$size = Read-CsvSafe "size.csv"
+$size = @(Read-CsvSafe "size.csv")
 if ($size.Count) {
     [void]$sb.AppendLine("## Disk & installer size")
     [void]$sb.AppendLine()

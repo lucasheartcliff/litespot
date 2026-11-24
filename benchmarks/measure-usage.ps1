@@ -32,14 +32,14 @@ $wsSeries = @()
 $privSeries = @()
 $cpuSeries = @()
 
-$pids = @(Get-DescendantPids -RootPid $rootPid)
+$pids = @(Get-DescendantPids -RootPid $rootPid -IncludeNames $app.processNames)
 $prevCpu = Get-TreeCpuSeconds -Pids $pids
 $prevTime = [System.Diagnostics.Stopwatch]::StartNew()
 
 for ($i = 0; $i -lt $samples; $i++) {
     Start-Sleep -Milliseconds $intervalMs
     # Re-resolve the tree each sample so new renderer/helper processes are caught.
-    $pids = @(Get-DescendantPids -RootPid $rootPid)
+    $pids = @(Get-DescendantPids -RootPid $rootPid -IncludeNames $app.processNames)
 
     $mem = Get-TreeMemory -Pids $pids
     $wsSeries += $mem.WorkingSetMB

@@ -22,11 +22,11 @@ $rows = @()
 
 for ($i = 1; $i -le $config.runs; $i++) {
     # Make sure nothing from a previous run is lingering.
-    Get-Process -Name $app.processNames -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Stop-AppProcesses -Names $app.processNames
     Start-Sleep -Seconds 2
 
     $proc = Start-Process -FilePath $app.exe -PassThru
-    $elapsed = Wait-ForMainWindow -RootPid $proc.Id -TimeoutMs 60000
+    $elapsed = Wait-ForMainWindow -RootPid $proc.Id -TimeoutMs 60000 -IncludeNames $app.processNames
 
     if ($null -eq $elapsed) {
         Write-Warning "$AppName run ${i}: window never appeared within timeout."
@@ -36,7 +36,7 @@ for ($i = 1; $i -le $config.runs; $i++) {
     }
 
     # Close the app before the next run.
-    Get-Process -Name $app.processNames -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Stop-AppProcesses -Names $app.processNames
     Start-Sleep -Seconds 2
 }
 

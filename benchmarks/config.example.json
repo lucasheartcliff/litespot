@@ -1,5 +1,5 @@
 {
-  "$comment": "Copy to config.json and fill in real paths. processNames is a fallback used only when tree-walking from the launched PID is unavailable (e.g. attaching to an already-running app).",
+  "$comment": "Copy to config.json and fill in real paths. processNames: the FIRST entry is the main executable (used as the root and to stop the app); the rest are helper processes counted in the tree. Other processes in the tree (e.g. a browser opened by a link) are ignored.",
   "runs": 5,
   "sampleSeconds": 30,
   "sampleIntervalMs": 1000,

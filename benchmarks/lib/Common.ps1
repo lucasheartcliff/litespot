@@ -8,22 +8,36 @@
 
 Set-StrictMode -Version Latest
 
+# Force invariant number formatting/parsing. On machines with a decimal comma
+# (e.g. pt-BR), CSV values like "968,2" were re-read as 9682 and inflated 10x.
+[System.Threading.Thread]::CurrentThread.CurrentCulture = [System.Globalization.CultureInfo]::InvariantCulture
+
 function Get-DescendantPids {
     <#
         Returns the given root PID plus all descendant PIDs, walking
         Win32_Process.ParentProcessId. This captures WebView2 / renderer helpers
-        regardless of their executable name.
+        regardless of their executable name. When -IncludeNames is given, only
+        processes with those names (plus the root) are returned, so unrelated
+        children such as a browser opened from an external link are excluded.
     #>
-    param([Parameter(Mandatory)][int]$RootPid)
+    param(
+        [Parameter(Mandatory)][int]$RootPid,
+        [string[]]$IncludeNames
+    )
 
     $all = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-        Select-Object ProcessId, ParentProcessId
+        Select-Object ProcessId, ParentProcessId, Name
+    $nameById = @{}
+    foreach ($p in $all) { $nameById[[int]$p.ProcessId] = ($p.Name -replace '\.exe$', '') }
     $childrenByParent = @{}
+    # Cast to [int]: CIM returns UInt32 and hashtable keys of different numeric
+    # types never match, which silently truncated the tree to the root process.
     foreach ($p in $all) {
-        if (-not $childrenByParent.ContainsKey($p.ParentProcessId)) {
-            $childrenByParent[$p.ParentProcessId] = @()
+        $parent = [int]$p.ParentProcessId
+        if (-not $childrenByParent.ContainsKey($parent)) {
+            $childrenByParent[$parent] = @()
         }
-        $childrenByParent[$p.ParentProcessId] += $p.ProcessId
+        $childrenByParent[$parent] += [int]$p.ProcessId
     }
 
     $result = New-Object System.Collections.Generic.HashSet[int]
@@ -35,18 +49,38 @@ function Get-DescendantPids {
             foreach ($child in $childrenByParent[$current]) { [void]$stack.Push($child) }
         }
     }
+    if ($IncludeNames) {
+        $keep = New-Object System.Collections.Generic.HashSet[int]
+        foreach ($id in $result) {
+            if ($id -eq $RootPid -or $IncludeNames -contains $nameById[$id]) { [void]$keep.Add($id) }
+        }
+        return $keep
+    }
     return $result
 }
 
 function Get-PidsByName {
-    <# Fallback: resolve a root PID from a set of process names (e.g. when
-       attaching to an already-running app). Picks the oldest matching process
-       as the root. #>
+    <# Resolve the root PID of an already-running app. Only the FIRST name (the
+       app's main executable) is used for the root, so an unrelated process that
+       happens to share a helper name (e.g. another app's msedgewebview2) is
+       never picked. Returns the oldest matching process, or $null. #>
     param([Parameter(Mandatory)][string[]]$Names)
-    $procs = Get-Process -Name $Names -ErrorAction SilentlyContinue |
+    $procs = Get-Process -Name $Names[0] -ErrorAction SilentlyContinue |
         Sort-Object StartTime
     if (-not $procs) { return $null }
     return $procs[0].Id
+}
+
+function Stop-AppProcesses {
+    <# Stop an app's main process(es) together with their own child tree. Unlike
+       stopping by helper name, this never touches other apps' processes (for
+       example another app's msedgewebview2). #>
+    param([Parameter(Mandatory)][string[]]$Names)
+    foreach ($p in @(Get-Process -Name $Names[0] -ErrorAction SilentlyContinue)) {
+        # taskkill writes to stderr when the process already exited; that is
+        # expected and must not abort the run under $ErrorActionPreference=Stop.
+        try { & taskkill.exe /T /F /PID $p.Id 2>&1 | Out-Null } catch { }
+    }
 }
 
 function Get-TreeMemory {
@@ -103,11 +137,12 @@ function Wait-ForMainWindow {
        is the app-agnostic "launch -> window visible" startup signal. #>
     param(
         [Parameter(Mandatory)][int]$RootPid,
-        [int]$TimeoutMs = 30000
+        [int]$TimeoutMs = 30000,
+        [string[]]$IncludeNames
     )
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     while ($sw.ElapsedMilliseconds -lt $TimeoutMs) {
-        $pids = Get-DescendantPids -RootPid $RootPid
+        $pids = Get-DescendantPids -RootPid $RootPid -IncludeNames $IncludeNames
         foreach ($id in $pids) {
             $p = Get-Process -Id $id -ErrorAction SilentlyContinue
             if ($p -and $p.MainWindowHandle -ne 0) {
